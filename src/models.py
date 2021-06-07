@@ -7,57 +7,52 @@ from sqlalchemy import create_engine
 from eralchemy import render_er
 
 Base = declarative_base()
+## Draw from SQLAlchemy base
 
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    user_name = Column(String(250), nullable=False)
-    first_name = Column(String(40), nullable=False)
-    last_name = Column(String(80), nullable=False)
-    email = Column (String(120), nullable=False)
-    
-
+    name = Column(String(250))
+    last_name = Column(String(250))
+    email=Column(String(250), nullable=False)
+    password=Column(String(250), nullable=False)
     # is_logged= Column(Boolean, default=False, nullable=False)
-class Post(Base):
-    __tablename__ = 'post'
-    id = Column(Integer, primary_key=True)
-    creator_id = Column(Integer, ForeignKey('user.id'))
-    post = relationship(User)
-    image = Column(String(400), nullable=False)
-    text = Column(String(400))
 
-class Comment(Base):
-    __tablename__ = 'comment'
+class Characters(Base):
+    __tablename__ = 'character'
     id = Column(Integer, primary_key=True)
-    creator_id = Column(Integer, ForeignKey('user.id'))
-    user=relationship(User)
-    post_id = Column(Integer, ForeignKey('post.id'))
+    name = Column(String(250))
+    eye_color=Column(String(250))
+    skin_color=Column(String(250))
+    gender=Column(String(250))
+    height = Column(String(250))
+    description= Column(String(250))
 
-    
-class Likes(Base):
-    __tablename__ = 'likes'
+class Planets(Base):
+    __tablename__ = 'planets'
     id = Column(Integer, primary_key=True)
-    creator_id = Column(Integer, ForeignKey('user.id'))
-    comment_id =  Column(Integer, ForeignKey('comment.id'))
+    name = Column(String(250))
+    population=Column(Integer,primary_key=False)
+    orbital_period=Column(Integer,primary_key=False)
+    rotation_period= Column(Integer,primary_key=False)
+    diameter = Column(Integer,primary_key=False)
 
-class Media(Base):
-	__tablename__ = 'media'
-	id = Column(Integer, primary_key=True)
-	url = Column(String(250))
-	post_id = Column(Integer, ForeignKey('post.id'))
-	post= relationship(Post)
-    
+class Favorite_Character(Base):
+    __tablename__ = 'favorite_character'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user= relationship(User)
+    character_id = Column(Integer, ForeignKey('character.id'))
+    character = relationship(Characters)
+
+class Favorite_Planet(Base):
+    __tablename__ = 'favorite_planet'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user= relationship(User)
+    planet_id = Column(Integer, ForeignKey('planet.id'))
+    planet = relationship(Planets)
 
 def to_dict(self):
-    return {}
-
+        return {}
 render_er(Base, 'diagram.png')
-
-	
-
-
-
-
-
-
-
